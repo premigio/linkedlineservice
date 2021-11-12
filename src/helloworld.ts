@@ -1,4 +1,4 @@
 export function helloWorld(): boolean {
-    console.log("Hello World");
+    console.log("Hello Developing World");
     return true;
 }

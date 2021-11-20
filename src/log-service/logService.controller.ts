@@ -1,5 +1,6 @@
 import * as Koa from 'koa';
 import Router from 'koa-router';
+import { stringify } from 'querystring';
 
 export class LogServiceController {
 
@@ -17,7 +18,17 @@ export class LogServiceController {
     private createRoutes() {
         this.router.post('/', async (ctx: Koa.Context) => {
             ctx.etag = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
-            ctx.body = 'POST PREPARED';
+
+            var log : string = ctx.request.body?.text;
+
+            console.log(log);
+
+            if (!log) {
+                ctx.status = 400;
+                return;
+            }
+
+            ctx.body = 'POST PREPARED: ' + log;
             ctx.status = 202;
         });
     }

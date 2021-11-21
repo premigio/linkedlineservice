@@ -17,6 +17,10 @@
     /* Completeness */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     /* Debug */
-    "sourceMap": true
+    "sourceMap": true,
+    /* Decorators */
+    "types": ["reflect-metadata", "node"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   }
 }

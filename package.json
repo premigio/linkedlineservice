@@ -2,12 +2,12 @@
   "name": "linkedlineservice",
   "version": "1.0.0",
   "description": "Web Service to write on a shared log file such that each entry (line) is linked to the previous one using its hash and a proof of work.",
-  "main": "./scripts/app.js",
+  "main": "./scripts/configuration/app.js",
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "build_start": "tsc && nodemon scripts/app.js ",
-    "start": "node scripts/app.js "
+    "build_start": "tsc && nodemon scripts/configuration/app.js ",
+    "start": "node scripts/configuration/app.js "
   },
   "keywords": [],
   "author": "Pedro Pingarilho",

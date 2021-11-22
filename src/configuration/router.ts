@@ -5,19 +5,6 @@ import Router from 'koa-router';
 import Container from 'typedi';
 import { LoggerController } from '../controllers/logger.controller';
 
-
-function createLoggerRouter() : Router {
-    let router = new Router({
-        prefix: '/log-service',
-    });
-
-    const loggerController: LoggerController = Container.get(LoggerController);
-
-    router.post('/', async (ctx: Koa.Context) => loggerController.postLog(ctx));
-
-    return router;
-}
-
 export function prepareKoa(port: number) : Koa {
     port = Number.isInteger(port) ? port : 8000;
 
@@ -44,4 +31,16 @@ export function prepareKoa(port: number) : Koa {
     app.use(loggerRouter.allowedMethods());
 
     return app;
+}
+
+function createLoggerRouter() : Router {
+    let router = new Router({
+        prefix: '/log-service',
+    });
+
+    const loggerController: LoggerController = Container.get(LoggerController);
+
+    router.post('/', async (ctx: Koa.Context) => loggerController.postLog(ctx));
+
+    return router;
 }

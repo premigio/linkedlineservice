@@ -1,14 +1,14 @@
 import * as Koa from 'koa';
 import { Service } from 'typedi';
-import { ILoggerService } from '../services/abstract/ilogger.services';
+import { LoggerService } from '../services/logger.services';
 
 
 @Service()
 export class LoggerController {
 
-    public service: ILoggerService;
+    private readonly service: LoggerService;
 
-    constructor(service: ILoggerService) {
+    constructor(service: LoggerService) {
         this.service = service;
     }
 
@@ -25,6 +25,7 @@ export class LoggerController {
             ctx.status = 400;
             return;
         }
+        this.service.processLog(log);
 
         ctx.body = 'POST PREPARED: ' + log;
         ctx.status = 202;

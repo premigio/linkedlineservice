@@ -14,7 +14,8 @@ export class LoggerController {
 
     /**
      * POST (/log-service)
-     * Posts Log into the csv file
+     * Posts Log into the csv file. 
+     * Even though it is not direct, the code does not await so it can be called various times. Therefore, 202 is returned.
      */
     public async postLog(ctx: Koa.Context) {
         ctx.etag = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
@@ -25,9 +26,9 @@ export class LoggerController {
             ctx.status = 400;
             return;
         }
+
         this.service.processLog(log);
 
-        ctx.body = 'POST PREPARED: ' + log;
         ctx.status = 202;
     }
 

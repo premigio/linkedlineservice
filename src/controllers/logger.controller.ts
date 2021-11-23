@@ -27,6 +27,8 @@ export class LoggerController {
             return;
         }
 
+        log = log.replace(/(\r\n|\n|\r)/gm, " ");
+
         this.service.processLog(log);
 
         ctx.status = 202;

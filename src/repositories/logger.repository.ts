@@ -33,7 +33,7 @@ export class LoggerRepository {
                 terminal: false
             });
 
-            var lastLine : string = '';
+            let lastLine: string = '';
 
             file.on('line',(line) => {
                 lastLine = line.length > 0 ? line : lastLine;
@@ -53,11 +53,13 @@ export class LoggerRepository {
 
     public async writeLog(maybeLog: Log): Promise<boolean> {
         if (this.mutex) {
+            console.log(maybeLog.message + ' => write passed')
             this.mutex = false;
             await this.writeSafelyLog(maybeLog)
             this.mutex = true;
             return true;
         }
+        console.log(maybeLog.message + ' => write failed')
         return false;
     }
 

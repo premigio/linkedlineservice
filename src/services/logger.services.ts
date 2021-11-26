@@ -46,7 +46,7 @@ export class LoggerService {
 
 }
 
-function createHash(value: string): string {
+export function createHash(value: string): string {
     return crypto.createHash('sha256')
                  .update(value, 'utf-8')
                  .digest('hex')

@@ -1,4 +1,5 @@
 import { createHash } from "../src/services/logger.services";
+
 describe("test hash function", () => {
     it("should create the correct hash", () => {
         expect(createHash("668f7b6f9632d02cfbdb2d7eb2b9a3c2fcb60b78454466ba4fd78f83a13561d7,first,29"))

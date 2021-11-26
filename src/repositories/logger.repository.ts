@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import { Log } from "../models/logs";
 import * as fs from "fs";
 import readline from 'readline';
+import {logger} from "../configuration/app";
 
 
 @Service()
@@ -40,11 +41,12 @@ export class LoggerRepository {
             });
 
             file.on('error', () => {
+                logger.error("There were problems opening the file when reading");
                 reject("There were problems opening the file");
             });
 
             file.on('close', function () {
-                console.log("log read successfully");
+                logger.info("log read successfully");
                 resolve(lastLine);
             });
         });
@@ -53,13 +55,11 @@ export class LoggerRepository {
 
     public async writeLog(maybeLog: Log): Promise<boolean> {
         if (this.mutex) {
-            console.log(maybeLog.message + ' => write passed')
             this.mutex = false;
             await this.writeSafelyLog(maybeLog)
             this.mutex = true;
             return true;
         }
-        console.log(maybeLog.message + ' => write failed')
         return false;
     }
 
@@ -68,16 +68,17 @@ export class LoggerRepository {
             let stream = fs.createWriteStream(this.filepath, {flags: 'a'});
 
 
-            stream.write('\n' + maybeLog.toString());
+            stream.write(maybeLog.toString() + '\n');
 
             stream.end();
             
             stream.on('error', () => {
+                logger.error("There were problems opening the file when writing");
                 reject("There were problems opening the file");
             });
 
             stream.on('close', function () {
-                console.log("log written successfully");
+                logger.info("log written successfully");
                 resolve();
             });
         });

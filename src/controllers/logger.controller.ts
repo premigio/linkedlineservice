@@ -1,6 +1,7 @@
 import * as Koa from 'koa';
 import { Service } from 'typedi';
 import { LoggerService } from '../services/logger.services';
+import {logger} from "../configuration/app";
 
 
 @Service()
@@ -18,7 +19,9 @@ export class LoggerController {
      * Even though it is not direct, the code does not await so it can be called various times. Therefore, 202 is returned.
      */
     public async postLog(ctx: Koa.Context) {
-        ctx.etag = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+        let etag = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+        logger.info("New request arrived. E-Tag set to: " + etag);
+        ctx.etag = etag;
 
         var log : string = ctx.request.body?.text;
 

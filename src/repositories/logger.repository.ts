@@ -40,6 +40,7 @@ export class LoggerRepository {
             });
 
             file.on('error', () => {
+                console.error("There were problems opening the file when reading");
                 reject("There were problems opening the file");
             });
 
@@ -53,13 +54,11 @@ export class LoggerRepository {
 
     public async writeLog(maybeLog: Log): Promise<boolean> {
         if (this.mutex) {
-            console.log(maybeLog.message + ' => write passed')
             this.mutex = false;
             await this.writeSafelyLog(maybeLog)
             this.mutex = true;
             return true;
         }
-        console.log(maybeLog.message + ' => write failed')
         return false;
     }
 
@@ -73,6 +72,7 @@ export class LoggerRepository {
             stream.end();
             
             stream.on('error', () => {
+                console.error("There were problems opening the file when writing");
                 reject("There were problems opening the file");
             });
 

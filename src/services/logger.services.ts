@@ -19,7 +19,7 @@ export class LoggerService {
         let written = false;
 
         while (true) {
-            console.log(log + ' => service started')
+            console.info(log + ' => service started')
             let line = await this.repository.getLastLog();
 
             this.previousHash = line ?

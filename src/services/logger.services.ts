@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import * as crypto from "crypto";
 import { Log } from "../models/logs";
 import { LoggerRepository } from "../repositories/logger.repository";
+import {logger} from "../configuration/app";
 
 @Service()
 export class LoggerService {
@@ -19,7 +20,7 @@ export class LoggerService {
         let written = false;
 
         while (true) {
-            console.info(log + ' => service started')
+            logger.info(log + ' => service started')
             let line = await this.repository.getLastLog();
 
             this.previousHash = line ?

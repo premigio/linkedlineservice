@@ -15,7 +15,7 @@ export class LoggerService {
         this.previousHash = "";
     }
 
-    public async processLog(log: string): Promise<void> {
+    public async processLog(log: string): Promise<string> {
 
         let written = false;
 
@@ -38,7 +38,7 @@ export class LoggerService {
             if (this.previousHash === maybeLog.prevHash) {
                 this.previousHash = hash;
                 written = await this.repository.writeLog(maybeLog);
-                if (written ) break;
+                if (written ) return hash;
                 await changeEventLoop();
             }
         }

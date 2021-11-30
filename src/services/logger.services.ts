@@ -20,8 +20,14 @@ export class LoggerService {
         let written = false;
 
         while (true) {
+            let line: string = "";
             logger.info(log + ' => service started')
-            let line = await this.repository.getLastLog();
+            try{
+                line = await this.repository.getLastLog()
+            } catch(e: any) {
+                logger.error(e.message);
+                break;
+            }
 
             this.previousHash = line ?
                 createHash(line) : crypto.randomBytes(32).toString('hex');
@@ -37,11 +43,17 @@ export class LoggerService {
             }
             if (this.previousHash === maybeLog.prevHash) {
                 this.previousHash = hash;
-                written = await this.repository.writeLog(maybeLog);
-                if (written ) return hash;
+                try{
+                    written = await this.repository.writeLog(maybeLog);
+                } catch(e: any) {
+                    logger.error(e.message);
+                    break;
+                }
+                if (written) return hash;
                 await changeEventLoop();
             }
         }
+        return "";
     }
 
 }

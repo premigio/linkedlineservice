@@ -1,8 +1,8 @@
 # Linked Line Log Service
 
 Web service to allow users, when invoking an API method (POST), to write on a shared log file such that each entry (
-line) is linked to the previous one using it’s hash and a proof of work (SHA256). The service is written in NodeJs's
-Typescript language
+line) is linked to the previous one using its hash and a proof of work (SHA256). The service is written in NodeJs's
+Typescript language.
 
 ## Installation + Running
 

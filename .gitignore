@@ -1,4 +1,5 @@
 ### VisualStudioCode template
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -233,3 +234,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Generated Log File
+logs.txt

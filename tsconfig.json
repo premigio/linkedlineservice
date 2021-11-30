@@ -19,7 +19,7 @@
     /* Debug */
     "sourceMap": true,
     /* Decorators */
-    "types": ["reflect-metadata", "node"],
+    "types": ["reflect-metadata", "node", "jest"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
   }

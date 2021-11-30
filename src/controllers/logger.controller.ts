@@ -23,7 +23,7 @@ export class LoggerController {
         logger.info("New request arrived. E-Tag set to: " + etag);
         ctx.etag = etag;
 
-        var log : string = ctx.request.body?.text;
+        let log: string = ctx.request.body?.text;
 
         if (!log) {
             ctx.status = 400;

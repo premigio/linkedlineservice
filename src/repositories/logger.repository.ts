@@ -37,7 +37,7 @@ export class LoggerRepository {
             let lastLine: string = '';
 
             file.on('line',(line) => {
-                lastLine = line.length > 0 ? line : lastLine;
+                lastLine = line?.length > 0 ? line : lastLine;
             });
 
             file.on('error', () => {
@@ -66,7 +66,6 @@ export class LoggerRepository {
     private async writeSafelyLog(maybeLog: Log) : Promise<void> {
         return new Promise((resolve, reject) => {
             let stream = fs.createWriteStream(this.filepath, {flags: 'a'});
-
 
             stream.write(maybeLog.toString() + '\n');
 

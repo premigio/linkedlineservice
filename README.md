@@ -1,60 +1,52 @@
-GOAL _
+# Linked Line Log Service
 
-It’s required to program a web service to allow users to, when invoking an API method (POST),
-to write on a shared log file such that each entry (line) is linked to the previous one using it’s
-hash and a proof of work.
+Web service to allow users, when invoking an API method (POST), to write on a shared log file such that each entry (
+line) is linked to the previous one using its hash and a proof of work (SHA256). The service is written in NodeJs's
+Typescript language.
 
-Expected line output CSV (file on server):
-`prev_hash,message,nonce`
-where:
-- *prev_hash*: previous line hash (sha256) in hex format without any separators. You
-  should use random for the first line.
-- *message*: message sent by the user.
-- *nonce*: a number that guarantees that `sha256(pre_hash + message + nonce)
-  => RegEx('^00.*')`, i.e., starts with two zeroes.
-  Log file content example:
+## Installation + Running
 
-    `0000000000000000000000000000000000000000000000000000000000000000,Hola Mundo,5`
+Once the source code is cloned, run
 
-    `0038711c83bd05b1e369e27246df4ba815a6dda04116b1b2f9a8c21ba4e1de38,Chau Mundo,71`
+```shell
+$ npm install
+```
 
-Where effectively it holds that:
+to install the dependencies. Once installed, run
 
-`sha256(pre_hash + message + nonce) => RegEx('^00.*')`
+```shell
+$ npm run build_start
+```
 
-For example, you can find in the second line:
+to compile the typescript code and run the service. Other run scripts are:
 
-`0038711c83bd05b1e369e27246df4ba815a6dda04116b1b2f9a8c21ba4e1de38,Chau Mundo,71`
+```shell
+# Compiles the Typescript code into the corresponding .js files
+$ npm run build
 
-If we want to verify the nonce is valid, we need to:
+# Run the code without compiling the typescript code. Use only if
+# the code is already compiled.
+$ npm run start
 
-> HEX(SHA256(0038711c83bd05b1e369e27246df4ba815a6dda04116b1b2f9a8c21ba4e1de38,Chau
-Mundo,71))
+# Run tests using the Jest Framework
+$ npm run test
+```
 
-> 00232c7d3c2283695a4029eddc1b9e8c83914515832a04f57b402fc444aa11b5
+### Using the Service
 
-In NodeJs you could calculate it doing:
-<pre>
-crypto.createHash('sha256')
-      .update('0038711c83bd05b1e369e27246df4ba815a6dda04116b1b2f9a8c21ba4e1de38,Chau Mundo,71', 'utf8')
-      .digest('hex')
-      .toString()
-</pre>
+Once the server is up and running, users can run a POST API Call to http://{host}:8000/log-service/ being host localhost
+by default. In order to write the log in our output file, the user must pass in the request body an object with the
+variable "text", like in the example below:
+```json
+{
+  "text": "string"
+}
+```
+The responses might be 202 if the request was accepted and started to be processed or 400 if there was nothing to be written in the log file.
 
-SUCCESS CRITERIA _
-- Code needs to be published on Github or Gitlab. We will be reviewing commit history.
-- It must contain a proper README file to help reviewers to understand how to launch or
-test the application. Also, don’t forget to keep your code clean and easy to read.
-- Users can perform requests (API calls) at the same time, the file log not necessarily
-must be sorted by requests income time.
-- The file:
-  - The link between lines must hold for all the lines in the file, i.e.,
-  `hash(line(n-1)) == line(n)[0])`
-  - All the log lines hash must start with two zeroes.
+In order to check the output file, open logs.txt. All other logs (error and info) are on their respoctive .log files.
 
-NICE TO HAVE _
+## Future Developments
 
-- Integration tests.
-- Proper app logs to be able to troubleshoot.
-- A single request must not block the file. All the requests must compete with each other
-to write down in the log file.
+As the code was not written for commercial use, it was thought to run on a single server / container using NodeJs's
+Event Loops. Thus, for future improvements in performance, worker threads might be a solution for better competing logs.
